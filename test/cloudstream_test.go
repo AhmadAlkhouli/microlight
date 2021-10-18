@@ -2,18 +2,18 @@ package test
 
 import (
 	"fmt"
-	"microlight/broker"
-	"microlight/cloudstream"
+	"microlight/stream"
+	"microlight/transport"
 	"testing"
 	"time"
 )
 
 var (
-	stream = cloudstream.CreateStreamBuilder(broker.CreateNatsBroker("test-cluster", "test"))
+	testStream = stream.CreateStreamBuilder(transport.CreateNatsBroker("test-cluster", "test"))
 )
 
 func TestStream(t *testing.T) {
-	stream.RegisterSource("s1", "s1", func(channel chan interface{}) {
+	testStream.RegisterSource("s1", "s1", func(channel chan interface{}) {
 		defer close(channel)
 		log.Debug.Println("hello")
 		for i := 0; i < 5; i++ {

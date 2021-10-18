@@ -1,7 +1,8 @@
-package broker
+package transport
 
 import (
 	"encoding/json"
+	"microlight/broker"
 	"microlight/logger"
 	"time"
 
@@ -12,7 +13,7 @@ var (
 	log = logger.Create()
 )
 
-//natsBroker ...
+// natsBroker ...
 type natsBroker struct {
 	connection    stan.Conn
 	ClusterID     string
@@ -20,8 +21,8 @@ type natsBroker struct {
 	subscribtions map[string]func() error
 }
 
-//CreateNatsBroker ...
-func CreateNatsBroker(clusterID string, clientID string) Broker {
+// CreateNatsBroker ...
+func CreateNatsBroker(clusterID string, clientID string) broker.Broker {
 	broker := &natsBroker{
 		ClusterID:     clusterID,
 		ClientID:      clientID,
@@ -31,7 +32,7 @@ func CreateNatsBroker(clusterID string, clientID string) Broker {
 	return broker
 }
 
-//GetConnection ...
+// GetConnection ...
 func (b *natsBroker) GetConnection() (*stan.Conn, error) {
 	if b.connection != nil {
 		return &b.connection, nil
@@ -45,7 +46,7 @@ func (b *natsBroker) GetConnection() (*stan.Conn, error) {
 	return &b.connection, err
 }
 
-//Publish ...
+// Publish ...
 func (b *natsBroker) Publish(topic string, message interface{}) error {
 	conn, err := b.GetConnection()
 	if err != nil {

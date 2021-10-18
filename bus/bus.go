@@ -1,13 +1,14 @@
-package cloudbus
+package bus
 
 import (
 	"encoding/json"
 	"errors"
 	"microlight/aggregate"
-	"microlight/broker"
-	"microlight/cloudstream"
+	"microlight/transport"
+
 	"microlight/logger"
 	"microlight/message"
+	"microlight/stream"
 )
 
 var (
@@ -19,8 +20,8 @@ type bus struct {
 	subscribers   map[string]*dispatcher
 	EventSource   chan *message.Event
 	stop          chan int
-	streamBuilder cloudstream.StreamBuilder
-	stream        cloudstream.Stream
+	streamBuilder stream.StreamBuilder
+	stream        stream.Stream
 }
 
 type dispatcher struct {
@@ -38,7 +39,7 @@ type Bus interface {
 
 //CreateBus ...
 func CreateBus(ClusterID string, ListenerID string) Bus {
-	st := cloudstream.CreateStreamBuilder(broker.CreateNatsBroker(ClusterID, ListenerID))
+	st := stream.CreateStreamBuilder(transport.CreateNatsBroker(ClusterID, ListenerID))
 	b := &bus{
 		streamBuilder: st,
 		subscribers:   make(map[string]*dispatcher),

@@ -2,7 +2,7 @@ package test
 
 import (
 	"microlight/aggregate"
-	"microlight/cloudbus"
+	"microlight/bus"
 	"microlight/logger"
 	"microlight/message"
 	"testing"
@@ -23,7 +23,7 @@ func TestBus(t *testing.T) {
 		ApplyEvent("UserCreated", UserCreatedHandler).
 		ApplyEvent("UserUpdated", UserUpdatedHandler).
 		Persistent(PersistUserData)
-	bus := cloudbus.CreateBus("test-cluster", "test1")
+	bus := bus.CreateBus("test-cluster", "test1")
 	bus.RegisterAggregate("User", builder)
 	bus.Start()
 	logg.Debug.Println("strarted")

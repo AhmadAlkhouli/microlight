@@ -1,4 +1,4 @@
-package cloudstream
+package stream
 
 import (
 	"microlight/broker"
